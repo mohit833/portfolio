@@ -70,7 +70,7 @@ function FaceVisual() {
   )
 }
 
-const VISUALS = { traffic: TrafficVisual, ml: MlVisual, face: FaceVisual }
+export const VISUALS = { traffic: TrafficVisual, ml: MlVisual, face: FaceVisual }
 
 export default function Projects() {
   const pin = useRef(null)

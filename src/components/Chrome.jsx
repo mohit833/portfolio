@@ -147,6 +147,9 @@ export function Nav() {
           ))}
         </ul>
         <div className="nav-actions">
+          <a className="nav-os" href="/">
+            Try MohitOS ✦
+          </a>
           <a className="btn btn-small" href={profile.resume} target="_blank" rel="noreferrer">
             Resume
           </a>

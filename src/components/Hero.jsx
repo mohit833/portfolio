@@ -25,7 +25,7 @@ function istTime() {
 }
 
 // Grid of dots that scatter away from the pointer and spring back.
-function DotField() {
+export function DotField() {
   const ref = useRef(null)
 
   useEffect(() => {

@@ -304,6 +304,21 @@ button {
   position: relative;
   z-index: 2;
 }
+.nav-os {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.nav-os:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+@media (max-width: 420px) {
+  .nav-os {
+    display: none;
+  }
+}
 .nav-burger {
   display: none;
   width: 44px;
