@@ -219,7 +219,6 @@ export function Footer() {
       </motion.div>
       <div className="footer-row">
         <span>© {new Date().getFullYear()} {profile.name}</span>
-        <span className="footer-mid">Designed & built with React + Framer Motion</span>
         <a href="#top">Back to top ↑</a>
       </div>
     </footer>

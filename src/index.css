@@ -1693,11 +1693,6 @@ button {
 .footer-row a:hover {
   color: var(--accent);
 }
-@media (max-width: 700px) {
-  .footer-mid {
-    display: none;
-  }
-}
 
 /* ---------- Preloader ---------- */
 
