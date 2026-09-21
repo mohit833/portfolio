@@ -83,13 +83,11 @@ export const experience = [
       'Built MCP tools and orchestration for agentic AI features in Esko products.',
       'As security SPOC for the product on Veracode, resolved 100+ vulnerabilities found by SAST and SCA analysis, including every high-severity finding.',
       'Led the migration of our build from Webpack to Vite.',
-      'Designed 20+ reusable, modular React components with unit tests. They became the standard for the Esko design system.',
-      'Refactored critical components, improving performance by 20% and cutting API calls by 50%, which made the app faster and cheaper to run.',
       'Took ownership of product translations and of cross-team collaboration on product connectors and integrations.',
       'As Scrum Master, ran sprint planning, backlog grooming, release planning, UAT coordination, and risk and issue tracking.',
       "Led a team of 5 to the Esko Innovation Days finals, winning People's Favourite for an agentic UI application. The team built 7 new features that raised customer satisfaction by 15%.",
     ],
-    tags: ['React', 'MCP', 'Agentic AI', 'Veracode', 'Scrum'],
+    tags: ['MCP', 'Agentic AI', 'Veracode', 'Vite', 'Scrum'],
   },
   {
     role: 'Software Engineer Trainee',
@@ -98,10 +96,12 @@ export const experience = [
     location: 'Bengaluru, India',
     points: [
       'Handpicked for a small pilot team that moved to weekly releases. It set a new way of working for the Esko R&D department.',
+      'Designed 20+ reusable, modular React components with unit tests. They became the standard for the Esko design system.',
+      'Refactored critical components, improving performance by 20% and cutting API calls by 50%, which made the app faster and cheaper to run.',
       'Set up the unit-testing framework and wrote around 300 unit and integration tests for backend APIs with Mockito, improving reliability and test coverage.',
       'Built a shared component used across multiple microservices.',
     ],
-    tags: ['Java', 'Spring Boot', 'Mockito', 'REST APIs'],
+    tags: ['React', 'Material UI', 'Java', 'Mockito', 'Design Systems'],
   },
   {
     role: 'Software Engineer Intern',
