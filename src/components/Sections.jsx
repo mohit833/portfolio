@@ -13,7 +13,7 @@ import {
   skills,
   stats,
 } from '../data'
-import { CountUp, Magnetic, Reveal, SectionHeading, lineUp, spotlight } from './motion'
+import { CountUp, Magnetic, Reveal, SectionHeading, ease, lineUp, spotlight } from './motion'
 
 export function Marquee() {
   const rows = [skills, [...skills].reverse()]
@@ -57,23 +57,76 @@ function ScrollText({ text }) {
   )
 }
 
+function Portrait() {
+  const ref = useRef(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  const y = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
+  const { photo, role, location } = profile
+  return (
+    // The wrapper owns whileInView: a fully clipped frame never registers as in view.
+    <motion.div
+      className="portrait"
+      ref={ref}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: '-80px' }}
+    >
+      <motion.div
+        className="portrait-frame"
+        variants={{
+          hidden: { clipPath: 'inset(100% 0% 0% 0%)' },
+          visible: { clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 1.3, ease } },
+        }}
+      >
+        <motion.img
+          src={photo.src}
+          srcSet={`${photo.small} 480w, ${photo.src} 960w`}
+          sizes="(max-width: 800px) 90vw, 420px"
+          alt={photo.alt}
+          width="960"
+          height="1200"
+          loading="lazy"
+          style={{ y, scale: 1.18 }}
+        />
+      </motion.div>
+      <svg className="portrait-badge" viewBox="0 0 120 120" aria-hidden="true">
+        <defs>
+          <path id="badge-circle" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0" />
+        </defs>
+        <circle cx="60" cy="60" r="58" />
+        <text>
+          <textPath href="#badge-circle" textLength="272" lengthAdjust="spacing">
+            {`${role} · ${location.split(',')[0]} · `}
+          </textPath>
+        </text>
+        <path className="badge-arrow" d="M52 68 L68 52 M56 52 H68 V64" />
+      </svg>
+    </motion.div>
+  )
+}
+
 export function About() {
   return (
     <section className="section" id="about">
       <SectionHeading index="01" label="About" title={'Engineer by trade,\ncraftsman by habit'} />
-      <ScrollText text={about.statement} />
-      <div className="about-body">
-        {about.body.map((p, i) => (
-          <Reveal as="p" key={i} delay={i * 0.1}>
-            {p}
-          </Reveal>
-        ))}
+      <div className="about-grid">
+        <div className="about-text">
+          <ScrollText text={about.statement} />
+          <div className="about-body">
+            {about.body.map((p, i) => (
+              <Reveal as="p" key={i} delay={i * 0.1}>
+                {p}
+              </Reveal>
+            ))}
+          </div>
+        </div>
+        <Portrait />
       </div>
       <div className="stats">
         {stats.map((s, i) => (
           <Reveal className="stat" key={s.label} delay={(i % 3) * 0.08}>
             <div className="stat-value">
-              <CountUp value={s.value} decimals={s.decimals} suffix={s.suffix} />
+              <CountUp value={s.value} decimals={s.decimals} prefix={s.prefix} suffix={s.suffix} />
             </div>
             <div className="stat-label">{s.label}</div>
           </Reveal>
@@ -160,8 +213,18 @@ export function Recognition() {
               <span className="award-icon" aria-hidden="true">
                 {a.featured ? '★' : '✦'}
               </span>
-              <h3>{a.title}</h3>
-              <p>{a.detail}</p>
+              <h3>
+                {a.title}
+                {a.badge && <span className="award-badge">{a.badge}</span>}
+              </h3>
+              {a.detail && <p>{a.detail}</p>}
+              {a.points && (
+                <ul className="job-points award-points">
+                  {a.points.map((pt) => (
+                    <li key={pt}>{pt}</li>
+                  ))}
+                </ul>
+              )}
               <span className="mono muted">{a.org}</span>
             </div>
           </Reveal>

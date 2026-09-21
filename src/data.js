@@ -15,6 +15,7 @@ export const profile = {
   location: 'Bengaluru, India',
   email: 'm0h1tmb.official@gmail.com',
   resume: '/Mohit_MB_Resume.pdf',
+  photo: { src: '/mohit.jpg', small: '/mohit-sm.jpg', alt: 'Portrait of Mohit M B' },
   // Rotates in the hero: "I build ___."
   building: ['React interfaces', 'agentic AI tools', 'secure software', 'teams that ship'],
   links: [
@@ -36,7 +37,7 @@ export const about = {
 export const stats = [
   { value: yearsSince(CAREER_START), decimals: 1, suffix: '+', label: 'Years shipping production code at Esko' },
   { value: 20, suffix: '+', label: 'Reusable React components in the Esko design system' },
-  { value: 200, suffix: '+', label: 'Unit & integration tests written for backend APIs' },
+  { value: 300, prefix: '~', label: 'Test cases written after I set up our unit-testing framework' },
   { value: 100, suffix: '+', label: 'Security vulnerabilities resolved from SAST & SCA scans' },
   { value: 50, suffix: '%', label: 'Fewer API calls after refactoring critical components' },
   { value: 20, suffix: '%', label: 'Performance boost on the refactored components' },
@@ -44,7 +45,7 @@ export const stats = [
 
 export const skills = [
   'React', 'JavaScript ES6+', 'Material UI', 'MCP', 'Agentic AI', 'AI Orchestration',
-  'Java', 'Spring Boot', 'REST APIs', 'Veracode', 'SAST & SCA', 'Jest', 'Mockito',
+  'Vite', 'Webpack', 'Java', 'Spring Boot', 'REST APIs', 'Veracode', 'SAST & SCA', 'Jest', 'Mockito',
   'Docker', 'Elasticsearch', 'OpenSearch', 'Kibana', 'MySQL', 'Git', 'Jira', 'Figma',
   'Scrum', 'Release Planning', 'UAT',
 ]
@@ -52,17 +53,17 @@ export const skills = [
 export const expertise = [
   {
     title: 'Frontend & Design Systems',
-    body: 'Reusable React and Material UI components, covered by unit tests, that set the standard for the Esko design system. I also refactor critical screens to make them faster.',
-    tags: ['React', 'Material UI', 'Jest', 'Performance'],
+    body: 'Reusable React and Material UI components, covered by unit tests, that set the standard for the Esko design system. I also refactor critical screens to make them faster and led our move from Webpack to Vite.',
+    tags: ['React', 'Material UI', 'Vite', 'Jest', 'Performance'],
   },
   {
     title: 'Agentic AI',
-    body: 'MCP tools and orchestration that let AI agents work with real product features and data.',
-    tags: ['MCP', 'Orchestration', 'AI Agents'],
+    body: "MCP tools and orchestration that let AI agents work with real product features and data. My agentic UI application won People's Favourite at Esko Innovation Days.",
+    tags: ['MCP', 'Orchestration', 'AI Agents', 'Agentic UI'],
   },
   {
     title: 'Application Security',
-    body: 'Security point of contact (SPOC) for the product on Veracode. I have resolved 100+ vulnerabilities found by SAST and SCA analysis.',
+    body: 'Security point of contact (SPOC) for the product on Veracode. I have resolved 100+ vulnerabilities found by SAST and SCA analysis, including every high-severity finding.',
     tags: ['Veracode', 'SAST', 'SCA'],
   },
   {
@@ -80,12 +81,13 @@ export const experience = [
     location: 'Bengaluru, India',
     points: [
       'Build MCP tools and orchestration for agentic AI features in Esko products.',
-      'Security SPOC for the product on Veracode. Resolved 100+ vulnerabilities found by SAST and SCA analysis.',
+      'Security SPOC for the product on Veracode. Resolved 100+ vulnerabilities found by SAST and SCA analysis, including every high-severity finding.',
+      'Led the migration of the build from Webpack to Vite.',
       'Designed 20+ reusable, modular React components with unit tests. They became the standard for the Esko design system.',
       'Refactored critical components, improving performance by 20% and cutting API calls by 50%, which made the app faster and cheaper to run.',
       'Own cross-team collaboration on product connectors: Mox Collaboration (digital asset management), Translations and the ArtPro+ connector.',
       'Scrum Master for the team: sprint planning, backlog grooming, release planning, UAT coordination and risk & issue tracking.',
-      "Led a team of 5 to the Esko Innovation Days finals, where we won People's Favourite. The team built 7 new features that raised customer satisfaction by 15%.",
+      "Led a team of 5 to the Esko Innovation Days finals and won People's Favourite for an agentic UI application. The team built 7 new features that raised customer satisfaction by 15%.",
     ],
     tags: ['React', 'MCP', 'Agentic AI', 'Veracode', 'Scrum'],
   },
@@ -96,7 +98,7 @@ export const experience = [
     location: 'Bengaluru, India',
     points: [
       'Handpicked for a small pilot team that moved to weekly releases. It set a new way of working for the Esko R&D department.',
-      'Wrote and maintained 200+ unit and integration tests for backend APIs using Mockito, improving reliability and test coverage.',
+      'Set up the unit-testing framework and wrote around 300 unit and integration tests for backend APIs with Mockito, improving reliability and test coverage.',
     ],
     tags: ['Java', 'Spring Boot', 'Mockito', 'REST APIs'],
   },
@@ -143,23 +145,35 @@ export const recognition = [
   {
     title: 'Smart India Hackathon',
     detail: 'Problem Statement Winner',
-    org: 'AICTE, Govt. of India',
+    org: 'AICTE, Govt. of India · College',
     featured: true,
   },
   {
-    title: 'POTB Award',
-    detail: 'Pat On The Back, for delivering outstanding results',
-    org: 'Esko · Dec 2024',
+    title: 'Pat On The Back',
+    badge: '×2',
+    points: [
+      'For setting up the unit-testing framework and writing around 300 test cases in my first months.',
+      'For taking ownership of product translations and the collaboration between components and connectors.',
+    ],
+    org: 'Esko',
+  },
+  {
+    title: 'GEM Award',
+    points: [
+      'For taking on Veracode and resolving every high-severity vulnerability.',
+      'For leading the migration from Webpack to Vite.',
+    ],
+    org: 'Esko',
+  },
+  {
+    title: "People's Favourite",
+    detail: 'Innovation Days finalist, for building an agentic UI application.',
+    org: 'Esko Innovation Days',
   },
   {
     title: 'Mountain Mover Award',
-    detail: 'For outstanding collaboration and impact as part of a high-performing team',
+    detail: 'For outstanding collaboration and impact as part of a high-performing team.',
     org: 'Esko · Nov 2024',
-  },
-  {
-    title: 'Innovation Days',
-    detail: "Finalist and People's Favourite. Led a team of 5 that built 7 new features",
-    org: 'Esko',
   },
 ]
 
@@ -170,7 +184,8 @@ export const beyond = [
     points: [
       'Organized 5+ virtual and in-person events for 100+ students from CS and non-CS branches, showing them practical uses of AI and generative tools.',
       'Ran 2 in-person hackathons with 30+ participants.',
-      'Mentored student teams through to two finished projects.',
+      'Conducted mock interviews for students at our college.',
+      'Mentored 5 students through their projects.',
     ],
   },
   {

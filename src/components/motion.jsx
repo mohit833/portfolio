@@ -51,7 +51,7 @@ export function SectionHeading({ index, label, title }) {
   )
 }
 
-export function CountUp({ value, decimals = 0, suffix = '' }) {
+export function CountUp({ value, decimals = 0, prefix = '', suffix = '' }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
   const [display, setDisplay] = useState((0).toFixed(decimals))
@@ -68,6 +68,7 @@ export function CountUp({ value, decimals = 0, suffix = '' }) {
 
   return (
     <span ref={ref}>
+      {prefix}
       {display}
       {suffix}
     </span>
