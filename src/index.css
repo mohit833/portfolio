@@ -1504,6 +1504,7 @@ button {
 .award-points {
   margin-bottom: 0;
   flex: 1;
+  align-content: start;
   font-size: 0.95rem;
 }
 .award.is-featured .award-inner {
