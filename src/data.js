@@ -19,7 +19,7 @@ export const profile = {
     'I build fast, reusable React interfaces and write the tests that keep them reliable.',
   links: [
     { label: 'GitHub', href: 'https://github.com/mohit833' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mohit' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/m0h1t-mb/' },
     { label: 'LeetCode', href: 'https://leetcode.com/Mohit_MB' },
   ],
 }
