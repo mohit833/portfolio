@@ -3,9 +3,9 @@ import { motion, useScroll, useTransform } from 'framer-motion'
 import {
   about,
   beyond,
-  certifications,
   education,
   experience,
+  expertise,
   interests,
   languages,
   profile,
@@ -83,12 +83,39 @@ export function About() {
   )
 }
 
+export function Expertise() {
+  return (
+    <section className="section" id="expertise">
+      <SectionHeading index="02" label="What I do" title={'Four things\nI do well'} />
+      <div className="expertise">
+        {expertise.map((e, i) => (
+          <Reveal className="xp-row" key={e.title} delay={i * 0.05}>
+            <span className="mono xp-num">0{i + 1}</span>
+            <h3 className="xp-title">{e.title}</h3>
+            <div className="xp-detail">
+              <p>{e.body}</p>
+              <ul className="tags">
+                {e.tags.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </div>
+            <span className="xp-arrow" aria-hidden="true">
+              ↗
+            </span>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 export function Experience() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.7', 'end 0.6'] })
   return (
     <section className="section" id="experience">
-      <SectionHeading index="02" label="Experience" title={'One company,\nthree chapters'} />
+      <SectionHeading index="03" label="Experience" title={'One company,\nthree chapters'} />
       <div className="timeline" ref={ref}>
         <div className="timeline-rail" aria-hidden="true">
           <motion.div className="timeline-fill" style={{ scaleY: scrollYProgress }} />
@@ -125,7 +152,7 @@ export function Experience() {
 export function Recognition() {
   return (
     <section className="section" id="recognition">
-      <SectionHeading index="04" label="Recognition" title={'Awards &\nmilestones'} />
+      <SectionHeading index="05" label="Recognition" title={'Awards &\nmilestones'} />
       <div className="awards">
         {recognition.map((a, i) => (
           <Reveal key={a.title} delay={i * 0.08} className={`award${a.featured ? ' is-featured' : ''}`}>
@@ -140,17 +167,6 @@ export function Recognition() {
           </Reveal>
         ))}
       </div>
-      <Reveal className="certs">
-        <span className="mono muted">Certifications</span>
-        <ul>
-          {certifications.map((c) => (
-            <li key={c.title}>
-              <span>{c.title}</span>
-              <span className="muted">{c.org}</span>
-            </li>
-          ))}
-        </ul>
-      </Reveal>
     </section>
   )
 }
@@ -158,7 +174,7 @@ export function Recognition() {
 export function Beyond() {
   return (
     <section className="section" id="beyond">
-      <SectionHeading index="05" label="Beyond the code" title={'Community,\ncuriosity & more'} />
+      <SectionHeading index="06" label="Beyond the code" title={'Community,\ncuriosity & more'} />
       <div className="beyond">
         {beyond.map((b, i) => (
           <Reveal className="beyond-card" key={b.title} delay={i * 0.1}>
@@ -216,7 +232,7 @@ export function Contact() {
     <section className="contact" id="contact">
       <div className="contact-glow" aria-hidden="true" />
       <Reveal className="eyebrow">
-        <span className="eyebrow-index">06</span>
+        <span className="eyebrow-index">07</span>
         <span className="eyebrow-line" />
         <span>Contact</span>
       </Reveal>
