@@ -68,11 +68,12 @@ export default function Work() {
                 </Reveal>
               )
             })}
-            <a className="work-end" href={github} target="_blank" rel="noreferrer" data-cursor="Open">
-              <span className="mono muted">Side of the desk</span>
+            <a className="work-end" href="#contact" data-cursor="Ask me">
+              <span className="mono muted">No public repo</span>
               <span className="work-end-title">
-                Code on GitHub <span aria-hidden="true">↗</span>
+                Ask me about it <span aria-hidden="true">↗</span>
               </span>
+              <span className="work-end-note">This work ships inside Esko products, so the code stays private.</span>
             </a>
           </motion.div>
           {horizontal && (
@@ -84,10 +85,15 @@ export default function Work() {
       </div>
 
       <div className="section earlier">
-        <Reveal className="eyebrow">
-          <span className="eyebrow-index">05.1</span>
-          <span className="eyebrow-line" />
-          <span>Earlier, at college</span>
+        <Reveal className="earlier-head">
+          <span className="eyebrow">
+            <span className="eyebrow-index">05.1</span>
+            <span className="eyebrow-line" />
+            <span>Earlier, at college</span>
+          </span>
+          <a className="link-arrow" href={github} target="_blank" rel="noreferrer" data-cursor="Open">
+            These are on GitHub <span aria-hidden="true">↗</span>
+          </a>
         </Reveal>
         <div className="earlier-grid">
           {projects.map((p, i) => {

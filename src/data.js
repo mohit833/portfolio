@@ -253,8 +253,8 @@ export const recognition = [
   {
     title: 'Mountain Mover Award',
     points: [
-      'For migrating a legacy application from Backbone.js to React.',
-      'For building a component shared across multiple microservices.',
+      'For the migration of a legacy Marionette.js application to React.',
+      'For designing a reusable component shared across multiple microservices.',
     ],
     org: 'Esko · Nov 2024',
   },
