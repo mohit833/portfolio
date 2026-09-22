@@ -4,8 +4,10 @@ import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
 import { Cursor, Footer, Nav, Preloader, ScrollProgress } from './components/Chrome'
 import Hero from './components/Hero'
-import Projects from './components/Projects'
-import { About, Beyond, Contact, Experience, Expertise, Marquee, Recognition } from './components/Sections'
+import Impact from './components/Impact'
+import Systems from './components/Systems'
+import Work from './components/Work'
+import { About, Beyond, Contact, Experience, Marquee, Recognition } from './components/Sections'
 
 // Show the intro loader once per browser session.
 function seenIntro() {
@@ -51,9 +53,10 @@ export default function App() {
         <Hero ready={!loading} />
         <Marquee />
         <About />
-        <Expertise />
+        <Systems />
+        <Impact />
         <Experience />
-        <Projects />
+        <Work />
         <Recognition />
         <Beyond />
         <Contact />

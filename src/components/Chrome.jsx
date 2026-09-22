@@ -13,7 +13,8 @@ import { ease } from './motion'
 
 const NAV = [
   { href: '#about', label: 'About' },
-  { href: '#expertise', label: 'Expertise' },
+  { href: '#systems', label: 'Systems' },
+  { href: '#impact', label: 'Proof' },
   { href: '#experience', label: 'Experience' },
   { href: '#work', label: 'Work' },
   { href: '#contact', label: 'Contact' },
@@ -147,9 +148,6 @@ export function Nav() {
           ))}
         </ul>
         <div className="nav-actions">
-          <a className="nav-os" href="/">
-            Try MohitOS ✦
-          </a>
           <a className="btn btn-small" href={profile.resume} target="_blank" rel="noreferrer">
             Resume
           </a>

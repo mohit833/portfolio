@@ -217,7 +217,7 @@ export default function Hero({ ready }) {
       <motion.div style={{ opacity: fade }}>
         <motion.div className="hero-bottom" initial="hidden" animate={show} variants={fadeUp(0.9)}>
           <p className="hero-tagline">
-            Software Engineer at Esko.
+            {profile.role} at {profile.company}.
             <br />
             I build <Rotator words={profile.building} active={ready} />
           </p>
