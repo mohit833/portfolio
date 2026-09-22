@@ -13,8 +13,7 @@ import { ease } from './motion'
 
 const NAV = [
   { href: '#about', label: 'About' },
-  { href: '#systems', label: 'Systems' },
-  { href: '#impact', label: 'Proof' },
+  { href: '#skills', label: 'Skills' },
   { href: '#experience', label: 'Experience' },
   { href: '#work', label: 'Work' },
   { href: '#contact', label: 'Contact' },

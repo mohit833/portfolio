@@ -118,7 +118,7 @@ function Flow() {
 
 export default function Systems() {
   return (
-    <section className="section" id="systems">
+    <section className="section" id="skills">
       <SectionHeading index="02" label="Systems" title={'The system\nI build for'} />
       <Reveal className="flow-intro">
         <p>
