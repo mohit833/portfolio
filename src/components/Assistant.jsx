@@ -16,6 +16,13 @@ const SECTION_LABELS = {
   contact: 'Contact',
 }
 
+const NOTES = {
+  claude: 'Answered by Claude, using only Mohit’s portfolio.',
+  gemini: 'Answered by Gemini, using only Mohit’s portfolio.',
+  scripted: 'Answering from a short scripted profile right now.',
+  default: 'Answers use only what is on Mohit’s portfolio.',
+}
+
 const GREETING = {
   id: 'hello',
   role: 'assistant',
@@ -35,7 +42,7 @@ export default function Assistant() {
   const [messages, setMessages] = useState([GREETING])
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
-  const [offline, setOffline] = useState(false)
+  const [via, setVia] = useState(null)
   const logRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -80,14 +87,17 @@ export default function Assistant() {
           }),
         })
         const data = await res.json().catch(() => ({}))
-        if (res.ok && data.text) reply = { text: data.text, section: data.section }
+        if (res.ok && data.text) {
+          setVia(data.via)
+          reply = { text: data.text, section: data.section }
+        }
         else if (res.status === 429) reply = { text: data.error, section: null }
         else {
-          setOffline(true)
+          setVia('scripted')
           reply = fallbackAnswer(question)
         }
       } catch {
-        setOffline(true)
+        setVia('scripted')
         reply = fallbackAnswer(question)
       }
 
@@ -182,9 +192,7 @@ export default function Assistant() {
                 ↑
               </button>
             </form>
-            <p className="assistant-note">
-              {offline ? 'Answering from a short scripted profile right now.' : 'Answers come from Claude, using only Mohit’s portfolio.'}
-            </p>
+            <p className="assistant-note">{NOTES[via] ?? NOTES.default}</p>
           </motion.aside>
         )}
       </AnimatePresence>

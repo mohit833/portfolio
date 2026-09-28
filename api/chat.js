@@ -1,6 +1,10 @@
-// The portfolio assistant. Claude answers questions about Mohit and decides,
+// The portfolio assistant. The model answers questions about Mohit and decides,
 // through a tool call, which section of the site to open for the visitor.
+//
+// Providers are tried in order: Claude, then Gemini, then (client-side) a short
+// scripted profile. Whichever keys exist decide how far the cascade gets.
 import Anthropic from '@anthropic-ai/sdk'
+import { GoogleGenAI } from '@google/genai'
 import {
   about,
   beyond,
@@ -16,7 +20,9 @@ import {
   work,
 } from '../src/data.js'
 
-const MODEL = 'claude-opus-5'
+const CLAUDE_MODEL = 'claude-opus-5'
+const GEMINI_MODEL = 'gemini-flash-latest'
+const MAX_TOKENS = 700
 const SECTIONS = ['about', 'skills', 'case-study', 'impact', 'experience', 'work', 'recognition', 'beyond', 'contact']
 
 // Abuse guards. Per-instance, so best effort — enough for a portfolio.
@@ -103,87 +109,158 @@ const TOOLS = [
   },
 ]
 
+const SECTION_HINT =
+  'about: who he is and the numbers. skills: what he does, including the multi-agent system diagram. ' +
+  'case-study: the onboarding API work. impact: security findings, tests, API calls. experience: the Esko ' +
+  'timeline. work: projects he shipped. recognition: awards. beyond: community and education. contact: email and links.'
+
+const cleanSection = (value) => (SECTIONS.includes(value) ? value : null)
+
+async function askClaude(messages) {
+  const client = new Anthropic()
+  const request = {
+    model: CLAUDE_MODEL,
+    max_tokens: MAX_TOKENS,
+    // Short factual answers: low effort keeps it quick and cheap.
+    output_config: { effort: 'low' },
+    system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
+    tools: TOOLS,
+    messages,
+  }
+
+  let response = await client.messages.create(request)
+  let section = null
+
+  // One tool round: the model opens a section, then finishes its sentence.
+  const toolUse = response.content.find((b) => b.type === 'tool_use')
+  if (toolUse) {
+    section = cleanSection(toolUse.input?.section)
+    response = await client.messages.create({
+      ...request,
+      messages: [
+        ...messages,
+        { role: 'assistant', content: response.content },
+        {
+          role: 'user',
+          content: [
+            {
+              type: 'tool_result',
+              tool_use_id: toolUse.id,
+              content: section ? `Opened the ${section} section.` : 'That section does not exist.',
+            },
+          ],
+        },
+      ],
+    })
+  }
+
+  if (response.stop_reason === 'refusal') return { text: '', section: null }
+  const text = response.content
+    .filter((b) => b.type === 'text')
+    .map((b) => b.text)
+    .join(' ')
+    .trim()
+  return { text, section }
+}
+
+async function askGemini(messages) {
+  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY })
+  const config = {
+    systemInstruction: SYSTEM,
+    maxOutputTokens: MAX_TOKENS,
+    tools: [
+      {
+        functionDeclarations: [
+          {
+            name: 'open_section',
+            description: 'Open a section of the portfolio for the visitor so they can see what the answer refers to.',
+            parametersJsonSchema: {
+              type: 'object',
+              properties: { section: { type: 'string', enum: SECTIONS, description: SECTION_HINT } },
+              required: ['section'],
+            },
+          },
+        ],
+      },
+    ],
+  }
+  const contents = messages.map((m) => ({
+    role: m.role === 'assistant' ? 'model' : 'user',
+    parts: [{ text: m.content }],
+  }))
+
+  let response = await ai.models.generateContent({ model: GEMINI_MODEL, contents, config })
+  let section = null
+
+  const call = response.functionCalls?.[0]
+  if (call) {
+    section = cleanSection(call.args?.section)
+    response = await ai.models.generateContent({
+      model: GEMINI_MODEL,
+      config,
+      contents: [
+        ...contents,
+        { role: 'model', parts: [{ functionCall: call }] },
+        {
+          role: 'user',
+          parts: [
+            {
+              functionResponse: {
+                name: call.name,
+                response: { result: section ? `Opened the ${section} section.` : 'That section does not exist.' },
+              },
+            },
+          ],
+        },
+      ],
+    })
+  }
+
+  return { text: (response.text || '').trim(), section }
+}
+
+const PROVIDERS = [
+  { id: 'claude', enabled: () => !!process.env.ANTHROPIC_API_KEY, run: askClaude },
+  { id: 'gemini', enabled: () => !!(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY), run: askGemini },
+]
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Use POST.' })
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return res.status(503).json({ error: 'assistant_offline' })
-  }
+
+  const available = PROVIDERS.filter((p) => p.enabled())
+  if (!available.length) return res.status(503).json({ error: 'assistant_offline' })
 
   const ip = (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || 'unknown'
   if (!allowed(ip)) {
     return res.status(429).json({ error: 'Too many questions for now. Please email him instead.' })
   }
 
-  try {
-    const incoming = Array.isArray(req.body?.messages) ? req.body.messages : []
-    const messages = incoming
-      .filter((m) => (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string' && m.content.trim())
-      .slice(-MAX_HISTORY)
-      .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_QUESTION_CHARS) }))
+  const incoming = Array.isArray(req.body?.messages) ? req.body.messages : []
+  const messages = incoming
+    .filter((m) => (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string' && m.content.trim())
+    .slice(-MAX_HISTORY)
+    .map((m) => ({ role: m.role, content: m.content.slice(0, MAX_QUESTION_CHARS) }))
 
-    if (!messages.length || messages[messages.length - 1].role !== 'user') {
-      return res.status(400).json({ error: 'Ask a question first.' })
-    }
-
-    const client = new Anthropic()
-    const request = {
-      model: MODEL,
-      max_tokens: 700,
-      // Short factual answers: low effort keeps it quick and cheap.
-      output_config: { effort: 'low' },
-      system: [{ type: 'text', text: SYSTEM, cache_control: { type: 'ephemeral' } }],
-      tools: TOOLS,
-      messages,
-    }
-
-    let response = await client.messages.create(request)
-    let section = null
-
-    // One tool round: the model opens a section, then finishes its sentence.
-    const toolUse = response.content.find((b) => b.type === 'tool_use')
-    if (toolUse) {
-      section = SECTIONS.includes(toolUse.input?.section) ? toolUse.input.section : null
-      response = await client.messages.create({
-        ...request,
-        messages: [
-          ...messages,
-          { role: 'assistant', content: response.content },
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'tool_result',
-                tool_use_id: toolUse.id,
-                content: section ? `Opened the ${section} section.` : 'That section does not exist.',
-              },
-            ],
-          },
-        ],
-      })
-    }
-
-    const text = response.content
-      .filter((b) => b.type === 'text')
-      .map((b) => b.text)
-      .join(' ')
-      .trim()
-
-    if (response.stop_reason === 'refusal' || !text) {
-      return res.status(200).json({
-        text: `I could not answer that one. Email him at ${profile.email} and he will reply himself.`,
-        section: null,
-      })
-    }
-
-    return res.status(200).json({ text, section, model: response.model })
-  } catch (error) {
-    if (error instanceof Anthropic.RateLimitError) {
-      return res.status(429).json({ error: 'Busy right now — try again in a moment.' })
-    }
-    if (error instanceof Anthropic.AuthenticationError) {
-      return res.status(503).json({ error: 'assistant_offline' })
-    }
-    console.error('assistant error:', error?.message)
-    return res.status(500).json({ error: 'Something went wrong answering that.' })
+  if (!messages.length || messages[messages.length - 1].role !== 'user') {
+    return res.status(400).json({ error: 'Ask a question first.' })
   }
+
+  // Walk the cascade: the first provider that answers wins.
+  let rateLimited = false
+  for (const provider of available) {
+    try {
+      const { text, section } = await provider.run(messages)
+      if (text) return res.status(200).json({ text, section, via: provider.id })
+      console.warn(`${provider.id} returned nothing; trying the next provider`)
+    } catch (error) {
+      rateLimited = rateLimited || error?.status === 429
+      console.error(`${provider.id} failed:`, error?.message)
+    }
+  }
+
+  if (rateLimited) {
+    return res.status(429).json({ error: 'Busy right now — try again in a moment.' })
+  }
+  // Nothing answered: the panel falls back to its scripted profile.
+  return res.status(503).json({ error: 'assistant_offline' })
 }
