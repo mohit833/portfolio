@@ -114,7 +114,7 @@ const VIZ = { security: SecurityVisual, tests: TestsVisual, api: ApiVisual }
 export default function Impact() {
   return (
     <section className="section" id="impact">
-      <SectionHeading index="03" label="Proof" title={'Numbers, with\nthe receipts'} />
+      <SectionHeading index="04" label="Proof" title={'Numbers, with\nthe receipts'} />
       <div className="impact">
         {impact.map((item, i) => {
           const Viz = VIZ[item.kind]

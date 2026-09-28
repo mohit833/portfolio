@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
 import Lenis from 'lenis'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import 'lenis/dist/lenis.css'
 import { Cursor, Footer, Preloader, ScrollProgress } from './components/Chrome'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
+import CaseStudy from './components/CaseStudy'
 import Impact from './components/Impact'
 import Systems from './components/Systems'
 import Work from './components/Work'
@@ -56,6 +59,9 @@ export default function App() {
   return (
     <MotionConfig reducedMotion="user">
       <AnimatePresence>{loading && <Preloader onDone={finishIntro} />}</AnimatePresence>
+      <a className="skip-link" href="#about">
+        Skip to content
+      </a>
       <ScrollProgress />
       <Cursor />
       <div className="noise" aria-hidden="true" />
@@ -65,6 +71,7 @@ export default function App() {
         <Marquee />
         <About />
         <Systems />
+        <CaseStudy />
         <Impact />
         <Experience />
         <Work />
@@ -73,6 +80,8 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <Analytics />
+      <SpeedInsights />
     </MotionConfig>
   )
 }

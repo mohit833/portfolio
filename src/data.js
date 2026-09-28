@@ -134,6 +134,34 @@ export const experience = [
   },
 ]
 
+// The onboarding work, told as a before and after.
+export const caseStudy = {
+  title: 'From Swagger calls\nto a single form',
+  intro:
+    'Pre-sales teams needed to onboard a customer and switch on beta features themselves. Until then it meant calling several APIs by hand through Swagger, in the right order, and hoping nothing was missed.',
+  before: ['POST /customers', 'POST /subscriptions', 'GET /iam/roles', 'PATCH /features', 'POST /licences'],
+  after: [
+    'Subscription requested through IAM',
+    'App-level subscription granted',
+    'Beta features switched on behind flags',
+    'Licensing side effects applied',
+  ],
+  notes: [
+    {
+      title: 'The problem',
+      body: 'Onboarding a beta customer was a manual sequence of Swagger requests. It needed someone who knew the order, it was easy to get wrong halfway through, and every new beta customer took engineering time.',
+    },
+    {
+      title: 'What I built',
+      body: 'I designed the flow that requests a subscription through IAM, grants it at application level, switches the beta features on behind feature flags and applies the licensing side effects. Then I put it behind one API, with a form in an internal interface.',
+    },
+    {
+      title: 'What changed',
+      body: 'Pre-sales teams onboard beta customers themselves, from a form, without engineering in the loop. The order is no longer something a person has to remember, because it happens the same way every time.',
+    },
+  ],
+}
+
 // Proof panels: every number on this site has a picture to go with it.
 export const impact = [
   {

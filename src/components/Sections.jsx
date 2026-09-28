@@ -35,7 +35,8 @@ export function Marquee() {
 }
 
 function Word({ children, progress, range }) {
-  const opacity = useTransform(progress, range, [0.14, 1])
+  // 0.45 keeps the unread words above the 3:1 contrast floor for large text.
+  const opacity = useTransform(progress, range, [0.45, 1])
   return <motion.span style={{ opacity }}>{children}</motion.span>
 }
 
@@ -140,7 +141,7 @@ export function Experience() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.7', 'end 0.6'] })
   return (
     <section className="section" id="experience">
-      <SectionHeading index="04" label="Experience" title={'One company,\nthree chapters'} />
+      <SectionHeading index="05" label="Experience" title={'One company,\nthree chapters'} />
       <div className="timeline" ref={ref}>
         <div className="timeline-rail" aria-hidden="true">
           <motion.div className="timeline-fill" style={{ scaleY: scrollYProgress }} />
@@ -177,7 +178,7 @@ export function Experience() {
 export function Recognition() {
   return (
     <section className="section" id="recognition">
-      <SectionHeading index="06" label="Recognition" title={'Awards &\nmilestones'} />
+      <SectionHeading index="07" label="Recognition" title={'Awards &\nmilestones'} />
       <div className="awards">
         {recognition.map((a, i) => (
           <Reveal key={a.title} delay={i * 0.08} className={`award${a.featured ? ' is-featured' : ''}`}>
@@ -209,7 +210,7 @@ export function Recognition() {
 export function Beyond() {
   return (
     <section className="section" id="beyond">
-      <SectionHeading index="07" label="Beyond the code" title={'Community,\ncuriosity & more'} />
+      <SectionHeading index="08" label="Beyond the code" title={'Community,\ncuriosity & more'} />
       <div className="beyond">
         {beyond.map((b, i) => (
           <Reveal className="beyond-card" key={b.title} delay={i * 0.1}>
@@ -267,7 +268,7 @@ export function Contact() {
     <section className="contact" id="contact">
       <div className="contact-glow" aria-hidden="true" />
       <Reveal className="eyebrow">
-        <span className="eyebrow-index">08</span>
+        <span className="eyebrow-index">09</span>
         <span className="eyebrow-line" />
         <span>Contact</span>
       </Reveal>

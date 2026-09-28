@@ -77,7 +77,7 @@ function Flow() {
   return (
     <div className="flow">
       {wide && (
-      <svg className="flow-svg" viewBox="0 0 1000 420" role="img" aria-label="Multi-agent system diagram">
+      <svg className="flow-svg" viewBox="0 0 1000 420" role="group" aria-label="Multi-agent system diagram">
         <g className="flow-links">
           {paths.map((p) => (
             <path key={p.id} d={p.d} />

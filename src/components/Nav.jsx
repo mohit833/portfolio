@@ -300,7 +300,7 @@ export default function Nav() {
       </header>
 
       {/* Phones: navigation sits in thumb reach. */}
-      <div className="nav-bottom">
+      <nav className="nav-bottom" aria-label="Section navigation">
         <button
           className={`nav-bottom-main${pressed === 'main' ? ' is-pressed' : ''}`}
           onClick={() => setMenuOpen(true)}
@@ -323,7 +323,7 @@ export default function Nav() {
         >
           Contact
         </a>
-      </div>
+      </nav>
 
       <AnimatePresence>
         {menuOpen && (

@@ -38,7 +38,7 @@ export default function Work() {
   return (
     <section className={`work${horizontal ? ' is-horizontal' : ''}`} id="work">
       <div className="section work-head">
-        <SectionHeading index="05" label="Selected Work" title={'What I have\nshipped'} />
+        <SectionHeading index="06" label="Selected Work" title={'What I have\nshipped'} />
       </div>
       <div ref={pin} className="work-pin" style={horizontal ? { height: `calc(100vh + ${distance}px)` } : undefined}>
         <div className="work-sticky">
@@ -87,7 +87,7 @@ export default function Work() {
       <div className="section earlier">
         <Reveal className="earlier-head">
           <span className="eyebrow">
-            <span className="eyebrow-index">05.1</span>
+            <span className="eyebrow-index">06.1</span>
             <span className="eyebrow-line" />
             <span>Earlier, at college</span>
           </span>
