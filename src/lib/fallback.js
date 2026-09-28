@@ -54,8 +54,11 @@ const INTENTS = [
     section: 'contact',
   },
   {
-    keys: ['skill', 'skills', 'stack', 'tech', 'tools'],
-    text: `His toolkit includes ${skills.slice(0, 12).join(', ')} and more.`,
+    keys: [
+      'skill', 'skills', 'skillset', 'skillsets', 'stack', 'techstack', 'tech', 'tools', 'toolkit',
+      'languages', 'language', 'framework', 'frameworks', 'technologies', 'know', 'knows',
+    ],
+    text: `His stack: ${skills.join(', ')}.`,
     section: 'skills',
   },
   {
