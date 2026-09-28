@@ -11,6 +11,8 @@ import {
 import { profile } from '../data'
 import { ease } from './motion'
 
+const SECTION_IDS = ['about', 'skills', 'experience', 'work', 'contact']
+
 const NAV = [
   { href: '#about', label: 'About' },
   { href: '#skills', label: 'Skills' },
@@ -113,38 +115,68 @@ export function Cursor() {
   )
 }
 
+// Highlights the section you are currently reading.
+function useActiveSection(ids) {
+  const [active, setActive] = useState(ids[0])
+  useEffect(() => {
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean)
+    if (!els.length) return
+    const io = new IntersectionObserver(
+      (entries) => {
+        const hit = entries.find((e) => e.isIntersecting)
+        if (hit) setActive(hit.target.id)
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    )
+    els.forEach((el) => io.observe(el))
+    return () => io.disconnect()
+  }, [ids])
+  return active
+}
+
 export function Nav() {
   const { scrollY } = useScroll()
-  const [hidden, setHidden] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  const active = useActiveSection(SECTION_IDS)
 
-  useMotionValueEvent(scrollY, 'change', (v) => {
-    const prev = scrollY.getPrevious() ?? 0
-    setHidden(v > prev && v > 240 && !open)
-    setScrolled(v > 24)
-  })
+  // The nav stays put: it only compacts once you leave the top of the page.
+  useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 24))
 
   useEffect(() => {
     document.body.style.overflow = open ? 'hidden' : ''
   }, [open])
 
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && setOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   return (
     <>
-      <motion.nav
-        className={`nav${scrolled ? ' is-scrolled' : ''}`}
-        animate={{ y: hidden ? '-120%' : 0 }}
-        transition={{ duration: 0.45, ease }}
-      >
+      <nav className={`nav${scrolled ? ' is-scrolled' : ''}`}>
         <a href="#top" className="nav-logo" aria-label="Back to top">
           MMB<span className="accent">.</span>
         </a>
         <ul className="nav-links">
-          {NAV.map((n) => (
-            <li key={n.href}>
-              <a href={n.href}>{n.label}</a>
-            </li>
-          ))}
+          {NAV.map((n) => {
+            const current = n.href.slice(1) === active
+            return (
+              <li key={n.href}>
+                <a href={n.href} className={current ? 'is-active' : ''} aria-current={current ? 'true' : undefined}>
+                  {current && (
+                    <motion.span
+                      className="nav-pill"
+                      layoutId="nav-pill"
+                      transition={{ type: 'spring', stiffness: 420, damping: 36 }}
+                    />
+                  )}
+                  <span>{n.label}</span>
+                </a>
+              </li>
+            )
+          })}
         </ul>
         <div className="nav-actions">
           <a className="btn btn-small" href={profile.resume} target="_blank" rel="noreferrer">
@@ -160,7 +192,7 @@ export function Nav() {
             <span />
           </button>
         </div>
-      </motion.nav>
+      </nav>
 
       <AnimatePresence>
         {open && (
@@ -169,23 +201,48 @@ export function Nav() {
             initial={{ clipPath: 'inset(0 0 100% 0)' }}
             animate={{ clipPath: 'inset(0 0 0% 0)' }}
             exit={{ clipPath: 'inset(0 0 100% 0)' }}
-            transition={{ duration: 0.6, ease }}
+            transition={{ duration: 0.55, ease }}
           >
-            <ul>
+            <ul className="mobile-links">
               {NAV.map((n, i) => (
                 <motion.li
                   key={n.href}
-                  initial={{ opacity: 0, y: 30 }}
+                  initial={{ opacity: 0, y: 26 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.15 + i * 0.06, duration: 0.6, ease }}
+                  transition={{ delay: 0.12 + i * 0.05, duration: 0.5, ease }}
                 >
-                  <a href={n.href} onClick={() => setOpen(false)}>
+                  <a
+                    href={n.href}
+                    className={n.href.slice(1) === active ? 'is-active' : ''}
+                    onClick={() => setOpen(false)}
+                  >
                     <span className="mono">0{i + 1}</span>
                     {n.label}
                   </a>
                 </motion.li>
               ))}
             </ul>
+
+            <motion.div
+              className="mobile-foot"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.34, duration: 0.5, ease }}
+            >
+              <a className="mobile-mail" href={`mailto:${profile.email}`}>
+                {profile.email}
+              </a>
+              <div className="mobile-socials">
+                {profile.links.map((l) => (
+                  <a key={l.label} href={l.href} target="_blank" rel="noreferrer">
+                    {l.label} <span aria-hidden="true">↗</span>
+                  </a>
+                ))}
+                <a href={profile.resume} target="_blank" rel="noreferrer">
+                  Resume <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
