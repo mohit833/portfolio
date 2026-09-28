@@ -24,7 +24,13 @@ export default function App() {
   const [lenis, setLenis] = useState(null)
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    // Touch devices already scroll smoothly; running Lenis there only adds a
+    // permanent animation loop that competes with taps.
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(pointer: coarse)').matches
+    )
+      return
     const instance = new Lenis({ autoRaf: true, lerp: 0.1, anchors: { duration: 1.4 } })
     setLenis(instance)
     window.__lenis = instance

@@ -195,8 +195,18 @@ export default function Nav() {
   const [hovered, setHovered] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [paletteOpen, setPaletteOpen] = useState(false)
+  const [pressed, setPressed] = useState(null)
   const active = useActiveSection()
   const activeLabel = NAV.find((n) => n.id === active)?.label ?? 'About'
+
+  // :active is unreliable on touch, so the press state is driven here: the
+  // button reacts on pointerdown, before the tap is even released.
+  const pressProps = (key) => ({
+    onPointerDown: () => setPressed(key),
+    onPointerUp: () => setPressed(null),
+    onPointerCancel: () => setPressed(null),
+    onPointerLeave: () => setPressed(null),
+  })
 
   useMotionValueEvent(scrollY, 'change', (v) => setScrolled(v > 120))
 
@@ -291,7 +301,12 @@ export default function Nav() {
 
       {/* Phones: navigation sits in thumb reach. */}
       <div className="nav-bottom">
-        <button className="nav-bottom-main" onClick={() => setMenuOpen(true)} aria-label="Open sections menu">
+        <button
+          className={`nav-bottom-main${pressed === 'main' ? ' is-pressed' : ''}`}
+          onClick={() => setMenuOpen(true)}
+          aria-label="Open sections menu"
+          {...pressProps('main')}
+        >
           <ProgressRing progress={scrollYProgress} />
           <span className="nav-bottom-label">
             <em>Section</em>
@@ -301,7 +316,11 @@ export default function Nav() {
             ⌃
           </span>
         </button>
-        <a className="nav-bottom-cta" href="#contact">
+        <a
+          className={`nav-bottom-cta${pressed === 'cta' ? ' is-pressed' : ''}`}
+          href="#contact"
+          {...pressProps('cta')}
+        >
           Contact
         </a>
       </div>
@@ -313,7 +332,7 @@ export default function Nav() {
             initial={{ clipPath: 'inset(0 0 100% 0)' }}
             animate={{ clipPath: 'inset(0 0 0% 0)' }}
             exit={{ clipPath: 'inset(0 0 100% 0)' }}
-            transition={{ duration: 0.5, ease }}
+            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
           >
             <button className="mobile-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">
               ✕
@@ -322,9 +341,9 @@ export default function Nav() {
               {NAV.map((n, i) => (
                 <motion.li
                   key={n.id}
-                  initial={{ opacity: 0, y: 26 }}
+                  initial={{ opacity: 0, y: 18 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.1 + i * 0.05, duration: 0.45, ease }}
+                  transition={{ delay: 0.04 + i * 0.03, duration: 0.28, ease }}
                 >
                   <a href={`#${n.id}`} className={n.id === active ? 'is-active' : ''} onClick={() => setMenuOpen(false)}>
                     <span className="mono">0{i + 1}</span>
@@ -337,7 +356,7 @@ export default function Nav() {
               className="mobile-foot"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.32, duration: 0.45, ease }}
+              transition={{ delay: 0.18, duration: 0.28, ease }}
             >
               <a className="mobile-mail" href={`mailto:${profile.email}`}>
                 {profile.email}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { agentFlow, expertise } from '../data'
 import { Reveal, SectionHeading, ease } from './motion'
@@ -43,8 +43,22 @@ function Node({ box, label, sub, id, active, onHover, variant = '' }) {
   )
 }
 
+// Only mount the layout this screen shows: the animated SVG never runs on phones.
+function useWide() {
+  const query = '(min-width: 861px)'
+  const [wide, setWide] = useState(() => window.matchMedia(query).matches)
+  useEffect(() => {
+    const mq = window.matchMedia(query)
+    const on = () => setWide(mq.matches)
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  return wide
+}
+
 function Flow() {
   const [active, setActive] = useState('orchestrator')
+  const wide = useWide()
   const paths = [
     { id: 'in', d: curve(REQUEST, ORCH), dur: 2.4 },
     ...AGENTS.map((a, i) => ({ id: `a${i}`, d: curve(ORCH, a), dur: 2.6 + i * 0.3 })),
@@ -62,6 +76,7 @@ function Flow() {
 
   return (
     <div className="flow">
+      {wide && (
       <svg className="flow-svg" viewBox="0 0 1000 420" role="img" aria-label="Multi-agent system diagram">
         <g className="flow-links">
           {paths.map((p) => (
@@ -98,8 +113,10 @@ function Flow() {
         <Node box={TOOLS} id="tools" label="MCP tools" sub="Python" variant="tools" active={active} onHover={setActive} />
         <Node box={PLATFORM} id="platform" label="Platform" active={active} onHover={setActive} />
       </svg>
+      )}
 
-      <ul className="flow-stack" aria-hidden="true">
+      {!wide && (
+      <ul className="flow-stack">
         {['request', 'orchestrator', 'agent', 'tools', 'platform'].map((id) => (
           <li key={id} className={id === 'tools' ? 'is-mine' : ''}>
             <span className="mono">{notes[id].label}</span>
@@ -107,11 +124,14 @@ function Flow() {
           </li>
         ))}
       </ul>
+      )}
 
+      {wide && (
       <motion.p className="flow-note" key={active} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
         <span className="mono accent">{note.label}</span>
         {note.note}
       </motion.p>
+      )}
     </div>
   )
 }

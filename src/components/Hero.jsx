@@ -31,7 +31,12 @@ export function DotField() {
   useEffect(() => {
     const canvas = ref.current
     const ctx = canvas.getContext('2d')
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    // Nothing to react to without a cursor, so phones get a static field
+    // instead of a 60fps loop competing with their taps and scrolling.
+    const still =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(pointer: coarse)').matches
+    const reduced = still
     const GAP = 28
     const PUSH = 150
     const GLOW = 240
@@ -116,8 +121,10 @@ export function DotField() {
     io.observe(canvas)
     const ro = new ResizeObserver(resize)
     ro.observe(canvas)
-    window.addEventListener('pointermove', onMove)
-    document.addEventListener('pointerleave', onLeave)
+    if (!still) {
+      window.addEventListener('pointermove', onMove)
+      document.addEventListener('pointerleave', onLeave)
+    }
 
     return () => {
       stop()

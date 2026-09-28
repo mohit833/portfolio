@@ -67,6 +67,14 @@ button {
   cursor: pointer;
 }
 
+/* No 300ms tap delay, no grey flash, and a press state you can feel. */
+a,
+button,
+[role='button'] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 :focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
@@ -538,6 +546,7 @@ kbd {
 }
 .nav-bottom-main {
   flex: 1;
+  transition: transform 0.12s ease, background 0.12s ease;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -562,9 +571,31 @@ kbd {
 .nav-bottom-caret {
   margin-left: auto;
   color: var(--muted);
+  transition: transform 0.2s var(--ease);
+}
+.nav-bottom-main:active,
+.nav-bottom-main.is-pressed {
+  transform: scale(0.97);
+  background: rgba(255, 255, 255, 0.08);
+}
+.nav-bottom-main:active .nav-bottom-caret,
+.nav-bottom-main.is-pressed .nav-bottom-caret {
+  transform: translateY(-2px);
+}
+.nav-bottom-cta:active,
+.nav-bottom-cta.is-pressed {
+  transform: scale(0.96);
+  filter: brightness(0.9);
+}
+.mobile-links a:active {
+  color: var(--accent);
+}
+.mobile-close:active {
+  transform: scale(0.94);
 }
 .nav-bottom-cta {
   display: grid;
+  transition: transform 0.12s ease, filter 0.12s ease;
   place-items: center;
   padding: 0 1.2em;
   border-radius: 999px;
