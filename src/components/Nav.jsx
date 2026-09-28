@@ -78,6 +78,12 @@ function Palette({ onClose, go }) {
 
   const items = useMemo(
     () => [
+      {
+        key: 'assistant',
+        label: 'Ask the assistant about Mohit',
+        hint: 'AI',
+        run: () => window.dispatchEvent(new Event('open-assistant')),
+      },
       ...NAV.map((n) => ({ key: n.id, label: n.label, hint: 'Section', run: () => go(n.id) })),
       {
         key: 'email',
@@ -316,6 +322,14 @@ export default function Nav() {
             ⌃
           </span>
         </button>
+        <button
+          className={`nav-bottom-ask${pressed === 'ask' ? ' is-pressed' : ''}`}
+          onClick={() => window.dispatchEvent(new Event('open-assistant'))}
+          aria-label="Ask the assistant about Mohit"
+          {...pressProps('ask')}
+        >
+          ✦
+        </button>
         <a
           className={`nav-bottom-cta${pressed === 'cta' ? ' is-pressed' : ''}`}
           href="#contact"
@@ -361,6 +375,15 @@ export default function Nav() {
               <a className="mobile-mail" href={`mailto:${profile.email}`}>
                 {profile.email}
               </a>
+              <button
+                className="mobile-ask"
+                onClick={() => {
+                  setMenuOpen(false)
+                  window.dispatchEvent(new Event('open-assistant'))
+                }}
+              >
+                <span aria-hidden="true">✦</span> Ask the AI assistant
+              </button>
               <div className="mobile-socials">
                 {profile.links.map((l) => (
                   <a key={l.label} href={l.href} target="_blank" rel="noreferrer">

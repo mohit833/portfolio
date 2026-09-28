@@ -6,6 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react'
 import 'lenis/dist/lenis.css'
 import { Cursor, Footer, Preloader, ScrollProgress } from './components/Chrome'
 import Nav from './components/Nav'
+import Assistant from './components/Assistant'
 import Hero from './components/Hero'
 import CaseStudy from './components/CaseStudy'
 import Impact from './components/Impact'
@@ -80,6 +81,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <Assistant />
       <Analytics />
       <SpeedInsights />
     </MotionConfig>
