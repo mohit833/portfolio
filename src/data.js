@@ -22,7 +22,6 @@ export const profile = {
   links: [
     { label: 'GitHub', href: 'https://github.com/mohit833' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/mohitmb' },
-    { label: 'LeetCode', href: 'https://leetcode.com/Mohit_MB' },
   ],
 }
 
