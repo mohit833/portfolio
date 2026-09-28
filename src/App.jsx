@@ -2,7 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
 import Lenis from 'lenis'
 import 'lenis/dist/lenis.css'
-import { Cursor, Footer, Nav, Preloader, ScrollProgress } from './components/Chrome'
+import { Cursor, Footer, Preloader, ScrollProgress } from './components/Chrome'
+import Nav from './components/Nav'
 import Hero from './components/Hero'
 import Impact from './components/Impact'
 import Systems from './components/Systems'
@@ -26,7 +27,11 @@ export default function App() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     const instance = new Lenis({ autoRaf: true, lerp: 0.1, anchors: { duration: 1.4 } })
     setLenis(instance)
-    return () => instance.destroy()
+    window.__lenis = instance
+    return () => {
+      instance.destroy()
+      delete window.__lenis
+    }
   }, [])
 
   useEffect(() => {

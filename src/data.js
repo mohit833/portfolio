@@ -14,7 +14,8 @@ export const profile = {
   company: 'Esko',
   location: 'Bengaluru, India',
   email: 'mohitmb.dev@gmail.com',
-  resume: '/Mohit_MB_Resume.pdf',
+  // Versioned filename so a phone that cached the old PDF cannot serve it.
+  resume: '/Mohit-M-B-Resume-Sep2026.pdf',
   photo: { src: '/mohit.jpg', small: '/mohit-sm.jpg', alt: 'Portrait of Mohit M B' },
   // Rotates in the hero: "I build ___."
   building: ['multi-agent AI systems', 'design systems in React', 'secure Spring Boot APIs', 'releases that ship'],
