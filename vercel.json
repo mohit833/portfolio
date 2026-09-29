@@ -1,3 +1,4 @@
 {
-  "redirects": [{ "source": "/classic", "destination": "/", "permanent": false }]
+  "redirects": [{ "source": "/classic", "destination": "/", "permanent": false }],
+  "functions": { "api/chat.js": { "maxDuration": 30 } }
 }
