@@ -63,7 +63,7 @@ export function Cursor() {
     }
     const over = (e) => {
       const t = e.target.closest('a, button, [data-cursor]')
-      const dark = !!e.target.closest('.xp-row, .award.is-featured, .btn-primary')
+      const dark = !!e.target.closest('.award.is-featured, .btn-primary')
       setState({ hover: !!t, label: t?.dataset.cursor || '', dark })
     }
     window.addEventListener('pointermove', move)

@@ -164,9 +164,6 @@ export default function Systems() {
                 ))}
               </ul>
             </div>
-            <span className="xp-arrow" aria-hidden="true">
-              ↗
-            </span>
           </Reveal>
         ))}
       </div>

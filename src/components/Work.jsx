@@ -68,13 +68,6 @@ export default function Work() {
                 </Reveal>
               )
             })}
-            <a className="work-end" href="#contact" data-cursor="Ask me">
-              <span className="mono muted">No public repo</span>
-              <span className="work-end-title">
-                Ask me about it <span aria-hidden="true">↗</span>
-              </span>
-              <span className="work-end-note">This work ships inside Esko products, so the code stays private.</span>
-            </a>
           </motion.div>
           {horizontal && (
             <div className="work-progress" aria-hidden="true">
