@@ -141,7 +141,7 @@ export function Experience() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.7', 'end 0.6'] })
   return (
     <section className="section" id="experience">
-      <SectionHeading index="05" label="Experience" title={'One company,\nthree chapters'} />
+      <SectionHeading index="05" label="Work Experience" title={'One company,\nthree chapters'} />
       <div className="timeline" ref={ref}>
         <div className="timeline-rail" aria-hidden="true">
           <motion.div className="timeline-fill" style={{ scaleY: scrollYProgress }} />

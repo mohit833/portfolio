@@ -7,8 +7,8 @@ import { ease } from './motion'
 const NAV = [
   { id: 'about', label: 'About' },
   { id: 'skills', label: 'Skills' },
-  { id: 'experience', label: 'Experience' },
-  { id: 'work', label: 'Work' },
+  { id: 'experience', label: 'Work Experience' },
+  { id: 'work', label: 'Projects' },
   { id: 'contact', label: 'Contact' },
 ]
 const IDS = NAV.map((n) => n.id)

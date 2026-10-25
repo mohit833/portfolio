@@ -116,7 +116,7 @@ const TOOLS = [
 const SECTION_HINT =
   'about: who he is and the numbers. skills: what he does, including the multi-agent system diagram. ' +
   'case-study: the onboarding API work. impact: security findings, tests, API calls. experience: the Esko ' +
-  'timeline. work: projects he shipped. recognition: awards. beyond: community and education. contact: email and links.'
+  'timeline. work: the projects he shipped. recognition: awards. beyond: community and education. contact: email and links.'
 
 const cleanSection = (value) => (SECTIONS.includes(value) ? value : null)
 
