@@ -80,7 +80,7 @@ function Palette({ onClose, go }) {
     () => [
       {
         key: 'assistant',
-        label: 'Ask the assistant about Mohit',
+        label: 'Ask me anything (AI)',
         hint: 'AI',
         run: () => window.dispatchEvent(new Event('open-assistant')),
       },
@@ -325,10 +325,10 @@ export default function Nav() {
         <button
           className={`nav-bottom-ask${pressed === 'ask' ? ' is-pressed' : ''}`}
           onClick={() => window.dispatchEvent(new Event('open-assistant'))}
-          aria-label="Ask the assistant about Mohit"
+          aria-label="Ask about Mohit"
           {...pressProps('ask')}
         >
-          ✦
+          <img src={profile.photo.small} alt="" width="30" height="30" />
         </button>
         <a
           className={`nav-bottom-cta${pressed === 'cta' ? ' is-pressed' : ''}`}
@@ -382,7 +382,7 @@ export default function Nav() {
                   window.dispatchEvent(new Event('open-assistant'))
                 }}
               >
-                <span aria-hidden="true">✦</span> Ask the AI assistant
+                <img src={profile.photo.small} alt="" width="26" height="26" /> Ask me anything
               </button>
               <div className="mobile-socials">
                 {profile.links.map((l) => (

@@ -16,6 +16,14 @@ const SECTION_LABELS = {
   contact: 'Contact',
 }
 
+// Said while the model works, so the wait reads as work, not a hang.
+const THINKING = [
+  'reading his experience…',
+  'checking the portfolio…',
+  'looking that up…',
+  'finding the right section…',
+]
+
 const NOTES = {
   claude: 'Answered by Claude, using only Mohit’s portfolio.',
   gemini: 'Answered by Gemini, using only Mohit’s portfolio.',
@@ -42,6 +50,7 @@ export default function Assistant() {
   const [messages, setMessages] = useState([GREETING])
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
+  const [thinkingLine, setThinkingLine] = useState(THINKING[0])
   const [via, setVia] = useState(null)
   const logRef = useRef(null)
   const inputRef = useRef(null)
@@ -73,6 +82,7 @@ export default function Assistant() {
       const question = raw.trim()
       if (!question || busy) return
       setBusy(true)
+      setThinkingLine(THINKING[Math.floor(Math.random() * THINKING.length)])
       setInput('')
       const history = [...messages, { id: `u${Date.now()}`, role: 'user', text: question }]
       setMessages(history)
@@ -113,11 +123,16 @@ export default function Assistant() {
 
   return (
     <>
-      <button className="assistant-fab" onClick={() => setOpen((o) => !o)} aria-label="Ask the assistant about Mohit">
-        <span className="assistant-spark" aria-hidden="true">
-          ✦
+      <button
+        className={`assistant-fab${open ? ' is-open' : ''}`}
+        onClick={() => setOpen((o) => !o)}
+        aria-label="Ask about Mohit"
+      >
+        <span className="assistant-orbit" aria-hidden="true">
+          <img src={profile.photo.small} alt="" width="48" height="48" />
+          <i className="assistant-moon" />
         </span>
-        <span className="assistant-fab-label">Ask AI</span>
+        <span className="assistant-hint" aria-hidden="true">ask me anything</span>
       </button>
 
       <AnimatePresence>
@@ -133,10 +148,14 @@ export default function Assistant() {
           >
             <header className="assistant-head">
               <span className="assistant-title">
-                <span className="assistant-spark" aria-hidden="true">
-                  ✦
+                <img className="assistant-face" src={profile.photo.small} alt="" width="34" height="34" />
+                <span>
+                  {profile.name}
+                  <em>
+                    <i className="assistant-live" />
+                    AI, answering from his portfolio
+                  </em>
                 </span>
-                Ask about Mohit
               </span>
               <button onClick={() => setOpen(false)} aria-label="Close assistant">
                 ✕
@@ -146,20 +165,25 @@ export default function Assistant() {
             <div className="assistant-log" ref={logRef} aria-live="polite">
               {messages.map((m) => (
                 <div className={`assistant-msg is-${m.role}`} key={m.id}>
+                  {m.section && SECTION_LABELS[m.section] && (
+                    <code className="assistant-tool">
+                      <span className="assistant-tool-tick">✓</span>
+                      open_section(&quot;{m.section}&quot;)
+                    </code>
+                  )}
                   <p>{m.text}</p>
                   {m.section && SECTION_LABELS[m.section] && (
                     <button className="assistant-jump" onClick={() => goToSection(m.section)}>
-                      ↳ {SECTION_LABELS[m.section]}
+                      Show me {SECTION_LABELS[m.section]} ↓
                     </button>
                   )}
                 </div>
               ))}
               {busy && (
                 <div className="assistant-msg is-assistant">
-                  <span className="assistant-typing" aria-label="Thinking">
-                    <i />
-                    <i />
-                    <i />
+                  <span className="assistant-working">
+                    <i className="assistant-pulse" />
+                    {thinkingLine}
                   </span>
                 </div>
               )}
