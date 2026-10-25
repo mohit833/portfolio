@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { profile } from '../data'
+import BotMark from './BotMark'
 import { SUGGESTIONS, fallbackAnswer } from '../lib/fallback'
 import { ease } from './motion'
 
@@ -129,7 +130,7 @@ export default function Assistant() {
         aria-label="Ask about Mohit"
       >
         <span className="assistant-orbit" aria-hidden="true">
-          <img src={profile.photo.small} alt="" width="48" height="48" />
+          <BotMark busy={busy} />
           <i className="assistant-moon" />
         </span>
         <span className="assistant-hint" aria-hidden="true">ask me anything</span>
@@ -148,7 +149,9 @@ export default function Assistant() {
           >
             <header className="assistant-head">
               <span className="assistant-title">
-                <img className="assistant-face" src={profile.photo.small} alt="" width="34" height="34" />
+                <span className="assistant-face">
+                  <BotMark busy={busy} />
+                </span>
                 <span>
                   {profile.name}
                   <em>

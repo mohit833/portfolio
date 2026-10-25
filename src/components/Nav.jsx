@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { profile } from '../data'
+import BotMark from './BotMark'
 import { ease } from './motion'
 
 const NAV = [
@@ -328,7 +329,7 @@ export default function Nav() {
           aria-label="Ask about Mohit"
           {...pressProps('ask')}
         >
-          <img src={profile.photo.small} alt="" width="30" height="30" />
+          <BotMark />
         </button>
         <a
           className={`nav-bottom-cta${pressed === 'cta' ? ' is-pressed' : ''}`}
@@ -382,7 +383,7 @@ export default function Nav() {
                   window.dispatchEvent(new Event('open-assistant'))
                 }}
               >
-                <img src={profile.photo.small} alt="" width="26" height="26" /> Ask me anything
+                <BotMark /> Ask me anything
               </button>
               <div className="mobile-socials">
                 {profile.links.map((l) => (

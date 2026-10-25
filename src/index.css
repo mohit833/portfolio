@@ -2348,6 +2348,74 @@ kbd {
 
 /* ---------- Assistant ---------- */
 
+/* The assistant's face: blinks while idle, scans its eyes while working. */
+.botmark {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.botmark-head {
+  fill: #15151a;
+  stroke: var(--accent);
+  stroke-width: 1.8;
+}
+.botmark-ear {
+  fill: rgba(200, 255, 61, 0.55);
+}
+.botmark-stalk {
+  stroke: var(--accent);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.botmark-bulb {
+  fill: var(--accent);
+  animation: botbulb 2.6s var(--ease) infinite;
+}
+.botmark-eyes circle {
+  fill: var(--accent);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: botblink 5s infinite;
+}
+.botmark-mouth {
+  stroke: rgba(200, 255, 61, 0.6);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+.botmark.is-busy .botmark-eyes {
+  animation: botscan 1.1s ease-in-out infinite alternate;
+}
+.botmark.is-busy .botmark-bulb {
+  animation-duration: 0.8s;
+}
+@keyframes botblink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.12);
+  }
+}
+@keyframes botbulb {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+@keyframes botscan {
+  from {
+    transform: translateX(-1.6px);
+  }
+  to {
+    transform: translateX(1.6px);
+  }
+}
+
 .assistant-fab {
   position: fixed;
   right: 20px;
@@ -2381,12 +2449,9 @@ kbd {
   height: 48px;
   flex-shrink: 0;
 }
-.assistant-orbit img {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: 50% 22%;
+.assistant-orbit .botmark {
+  width: 32px;
+  height: 32px;
 }
 .assistant-orbit::before {
   content: '';
@@ -2481,12 +2546,17 @@ kbd {
   color: var(--muted);
 }
 .assistant-face {
+  display: grid;
+  place-items: center;
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  object-fit: cover;
-  object-position: 50% 22%;
-  box-shadow: 0 0 0 1.5px rgba(200, 255, 61, 0.4);
+  background: #15151a;
+  box-shadow: inset 0 0 0 1.5px rgba(200, 255, 61, 0.35);
+}
+.assistant-face .botmark {
+  width: 22px;
+  height: 22px;
 }
 .assistant-live {
   width: 6px;
@@ -2690,19 +2760,14 @@ kbd {
   font-size: 1rem;
   transition: transform 0.12s ease, background 0.12s ease;
 }
-.nav-bottom-ask img {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: 50% 22%;
+.nav-bottom-ask .botmark {
+  width: 24px;
+  height: 24px;
 }
-.mobile-ask img {
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: 50% 22%;
+.mobile-ask .botmark {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
 }
 .nav-bottom-ask.is-pressed,
 .nav-bottom-ask:active {
